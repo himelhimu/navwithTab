@@ -40,14 +40,14 @@ public class PlaylistFragment extends Fragment {
 
     public List<PlaylistObject> getTestData() {
         List<PlaylistObject> trackList = new ArrayList<PlaylistObject>();
+        /*trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
         trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
         trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
         trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
         trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
         trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
         trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
-        trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
-        trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));
+        trackList.add(new PlaylistObject("Falling over", "12 tracks", ""));*/
         return trackList;
     }
 }

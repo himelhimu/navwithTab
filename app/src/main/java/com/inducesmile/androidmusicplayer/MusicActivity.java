@@ -77,7 +77,6 @@ public class MusicActivity extends AppCompatActivity{
                 transaction.commit();
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                assert drawer != null;
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             }

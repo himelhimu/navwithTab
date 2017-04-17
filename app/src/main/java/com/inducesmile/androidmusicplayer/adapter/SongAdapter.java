@@ -8,15 +8,16 @@ import android.view.ViewGroup;
 
 import com.inducesmile.androidmusicplayer.R;
 import com.inducesmile.androidmusicplayer.entities.SongObject;
+import com.inducesmile.androidmusicplayer.models.Song;
 
 import java.util.List;
 
 public class SongAdapter extends RecyclerView.Adapter<SongViewHolder>{
 
     private Context context;
-    private List<SongObject> allSongs;
+    private List<Song> allSongs;
 
-    public SongAdapter(Context context, List<SongObject> allSongs) {
+    public SongAdapter(Context context, List<Song> allSongs) {
         this.context = context;
         this.allSongs = allSongs;
     }
@@ -24,14 +25,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongViewHolder>{
     @Override
     public SongViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.song_list_layout, parent, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return new SongViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(SongViewHolder holder, int position) {
-        SongObject songs = allSongs.get(position);
-        holder.songTitle.setText(songs.getSongTitle());
-        holder.songAuthor.setText(songs.getSongAuthor());
+        Song songs = allSongs.get(position);
+        holder.songTitle.setText(songs.getTitle());
+        holder.songAuthor.setText(songs.getArtist());
     }
 
     @Override
