@@ -27,7 +27,9 @@
         <service
             android:name=".service.MusicService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+
+        </service>
     </application>
 
 </manifest>

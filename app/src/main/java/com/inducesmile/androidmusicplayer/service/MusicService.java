@@ -99,10 +99,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         Notification.Builder builder=new Notification.Builder(this);
         builder.setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.musicicon)
+                .setSmallIcon(R.drawable.play)
                 .setTicker(songTitle)
                 .setOngoing(true)
-                .setContentTitle("Playing");
+                .setContentTitle("Playing")
+        .setContentText(songTitle);
 
         Notification notf=builder.build();
         startForeground(1,notf);
@@ -117,7 +118,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-
+        if(mMediaPlayer.getCurrentPosition()>0){
+            mp.reset();
+            playNext();
+        }
     }
 
     @Override

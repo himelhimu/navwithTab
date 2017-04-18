@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import com.inducesmile.androidmusicplayer.models.Song;
 import com.inducesmile.androidmusicplayer.service.MusicService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SongFragment extends Fragment implements MediaController.MediaPlayerControl {
@@ -50,7 +53,19 @@ public class SongFragment extends Fragment implements MediaController.MediaPlaye
         songRecyclerView.setLayoutManager(linearLayoutManager);
         songRecyclerView.setHasFixedSize(true);
         songsList= (ArrayList<Song>) getSongsList();
-        SongAdapter mAdapter = new SongAdapter(getActivity(), songsList);
+
+        Collections.sort(songsList, new Comparator<Song>(){
+            public int compare(Song a, Song b){
+                return a.getTitle().compareTo(b.getTitle());
+            }
+        });
+        SongAdapter mAdapter = new SongAdapter(getActivity(), songsList, new SongAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(Song song) {
+                songPicked(song);
+                Log.i("TAG",song.getArtist()+" "+song.getTitle()+" "+song.getId());
+            }
+        });
         songRecyclerView.setAdapter(mAdapter);
 
      //   setupController();
@@ -59,8 +74,8 @@ public class SongFragment extends Fragment implements MediaController.MediaPlaye
     }
 
 
-    public void songPicked(View view){
-        mMusicService.setSong(Integer.parseInt(view.getTag().toString()));
+    public void songPicked(Song song){
+        mMusicService.setSong((int) song.getId());
         mMusicService.playSong();
         if(playbackPaused){
             setupController();
@@ -112,6 +127,17 @@ public class SongFragment extends Fragment implements MediaController.MediaPlaye
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (playIntent==null){
+            playIntent=new Intent(getActivity(),MusicService.class);
+            getActivity().bindService(playIntent,musicServiceConnect, Context.BIND_AUTO_CREATE);
+            getActivity().startService(playIntent);
+
+        }
+    }
+
     private void setupController() {
         mMusicController=new MusicController(getContext());
         mMusicController.setPrevNextListeners(new View.OnClickListener() {
@@ -130,12 +156,7 @@ public class SongFragment extends Fragment implements MediaController.MediaPlaye
         mMusicController.setAnchorView(getView().findViewById(R.id.song_list));
         mMusicController.setEnabled(true);
 
-        if (playIntent==null){
-            playIntent=new Intent(getActivity(),MusicService.class);
-            getActivity().bindService(playIntent,musicServiceConnect, Context.BIND_AUTO_CREATE);
-            getActivity().startService(playIntent);
 
-        }
     }
 
     public List<Song> getSongsList() {
@@ -200,7 +221,7 @@ mMusicService.go();
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
